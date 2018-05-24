@@ -1,0 +1,153 @@
+<!-- import highcharts javascript libraries-->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+
+<!--Start with a single button on the page-->
+<button id="addGraphButton" onclick="addGraph()">Add Graph...</button>
+
+<script>
+        var ByteBlowerGraphsApp = {}; // global variable
+        ByteBlowerGraphsApp.graphCounter = 0; // let's keep track of the graphs added to the page
+        ByteBlowerGraphsApp.graphThreads = {}; // let's keep track of the graphs updater threads that are running in the background
+        // for some strange reason Highcharts seems to take the wrong timezone, so we need to set it manually
+        // you may need to change this if you're in a different timezone (CET)
+        Highcharts.setOptions({
+            global: {
+                useUTC: true,
+                timezoneOffset: -120
+            }
+        });
+        
+        // helper function to get highcharts chart object based on the id of the div it is in
+        function getChartById(id){
+            return $('#'+id).highcharts();
+        }
+        
+        // onClick function for the main button on the page.
+        // adds a new layout to the main page that contains the textfields (ByteBlower server and ByteBlower interfaces), 
+        // the buttons (start and stop) and the chart itself
+        function addGraph() {
+            var prevDiv = document.getElementById("addGraphButton"); 
+            // the new div will contain all new elements (textfields, buttons and chart)
+            var newDiv = document.createElement("div");
+            newDiv.setAttribute("id", "container" + ByteBlowerGraphsApp.graphCounter);
+            newDiv.setAttribute("style", "width: 100%;");
+            // horizontal helper layout to display the textfields and buttons
+            var optionsDiv = document.createElement("div");
+            optionsDiv.setAttribute("align", "right");
+            optionsDiv.setAttribute("horizontal", "");
+            optionsDiv.setAttribute("layout", "");
+            newDiv.appendChild(optionsDiv);
+            optionsDiv.appendChild(document.createTextNode("Server: "));
+            // textfield for ByteBlower server address
+            var serverInput = document.createElement("INPUT");
+            serverInput.setAttribute("type", "text");
+            serverInput.setAttribute("id","server_" + ByteBlowerGraphsApp.graphCounter);
+            optionsDiv.appendChild(serverInput);
+            optionsDiv.appendChild(document.createTextNode("Interface(s): "));
+            // textfield for ByteBlower interfaces that we want to monitor in the chart
+            var interfaceInput = document.createElement("INPUT");
+            interfaceInput.setAttribute("type", "text");
+            interfaceInput.setAttribute("id","interface_" + ByteBlowerGraphsApp.graphCounter);
+            optionsDiv.appendChild(interfaceInput);
+            // start button to start the monitoring of the interface(s), linked to the startGraph() method
+            var startButton = document.createElement("button");
+            startButton.appendChild(document.createTextNode("Start"));
+            startButton.setAttribute("id", "start_" + ByteBlowerGraphsApp.graphCounter);
+            startButton.setAttribute("onclick", "startGraph(this.id)");
+            optionsDiv.appendChild(startButton);
+            // start button to start the monitoring of the interface(s), linked to the stopGraph() method
+            var stopButton = document.createElement("button");
+            stopButton.appendChild(document.createTextNode("Stop"));
+            stopButton.setAttribute("id", "stop_" + ByteBlowerGraphsApp.graphCounter);
+            stopButton.setAttribute("onclick", "stopGraph(this.id)");
+            optionsDiv.appendChild(stopButton);
+            // the div that will contain the highcharts chart
+            var chartDiv = document.createElement("div");
+            chartDiv.setAttribute("id", "chart" + ByteBlowerGraphsApp.graphCounter);
+            chartDiv.setAttribute("style", "min-width: 310px; height: 400px; margin: 0 auto");
+            newDiv.appendChild(chartDiv);
+            
+            // insertAfter doesn't exist, so we use following trick:
+            prevDiv.parentNode.insertBefore(newDiv, prevDiv.nextSibling);
+            // Create the chart and put it in the newly created div
+            Highcharts.stockChart('chart' + ByteBlowerGraphsApp.graphCounter, {
+                rangeSelector: {
+                    enabled: false // let's not show the rangeSelector
+                },
+
+                title: {
+                    text: 'ByteBlower real-time graph ' + ByteBlowerGraphsApp.graphCounter
+                },
+                
+                yAxis: {
+                    title: {
+                        text: 'Measured Throughput (Mbps)'
+                    }
+                },
+
+                exporting: {
+                    enabled: false
+                },
+                
+                navigator: {
+                    enabled: false // let's not show the navigator to zoom/select into the graph
+                },
+
+                series: [{
+                    name: 'ByteBlower real-time graph ' + ByteBlowerGraphsApp.graphCounter,
+                    data: (function () {
+                        // generate an array of zero data (30 seconds)
+                        var data = [],
+                            time = (new Date()).getTime(),
+                            i;
+
+                        for (i = -30; i <= 0; i += 1) {
+                            data.push([
+                                time + i * 1000,
+                                0
+                            ]);
+                        }
+                        return data;
+                    }())
+                }]
+            });
+            ByteBlowerGraphsApp.graphCounter++;
+        }
+        
+        // onClick method for start button on each of the chart layouts added to the main page
+        // we use the button id to know which start button was clicked
+        function startGraph(button_id) {
+            var graphCounter = button_id.split("_")[1];  // button id = "button_[graphCounter]"
+            // let's find the approperiate textfields 
+            var server = document.getElementById("server_" + graphCounter).value;
+            var interfaces = document.getElementById("interface_" + graphCounter).value;
+            // let's change the title of the chart 
+            var chart=getChartById('chart' + graphCounter);
+            chart.setTitle({text: "BB Server: " + server + ' , interface(s): ' + interfaces});
+            var series = chart.series[0];
+            // set up the updating of the chart each second (1000 ms)
+            ByteBlowerGraphsApp.graphThreads["" + graphCounter] = setInterval(function () {
+                var x = (new Date()).getTime(); // current time
+                var y = 0;
+                // we fetch the latest update from the ByteBlower server through a python script that is running in the background
+                // the python script is accessed through a REST API at port 5000 
+                $.getJSON('http://127.0.0.1:5000/data.json/' + server + '/' + interfaces, function (data) {
+                    console.log("fetched data: " + data);
+                    y = data;
+                    series.addPoint([x, y], true, true);
+                });
+                
+            }, 1000);
+        }
+        
+        // onClick method for stop button on each of the chart layouts added to the main page 
+        // we use the button id to know which stop button was clicked 
+        function stopGraph(button_id) {
+            var graphCounter = button_id.split("_")[1];
+            clearInterval(ByteBlowerGraphsApp.graphThreads["" + graphCounter]);
+        }
+        
+</script>
