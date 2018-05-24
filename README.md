@@ -7,6 +7,9 @@ A quick-and-dirty web-based dashboard showing live graphs of each ByteBlower int
 * ByteBlower Python API
 * ByteBlower Server
 
+
+ByteBlower Python API can be download from following location: http://setup.byteblower.com
+
 ## Run
 
 Start the python code with following command:
