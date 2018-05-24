@@ -1,7 +1,6 @@
 ## Needed for python2 / python3 print function compatibility
 from __future__ import print_function
 from flask import Flask, render_template, request
-import sqlite3
 import json
 from random import randint
 import webbrowser
