@@ -10,14 +10,15 @@ This is example code to build a dashboard showing live RX-graphs of each ByteBlo
 * ByteBlower Server
 
 
-ByteBlower Python API can be download from following location: http://setup.byteblower.com
+ByteBlower Python API can be download from following location: [ByteBlower Setup page](http://setup.byteblower.com)
 
 ## Run
 
 Start the python code with following command:
 
+```
 python web.py
-
+```
 Open a browser to following location: http://127.0.0.1:5000/graph
 
 ## Usage
@@ -26,4 +27,6 @@ Open a browser to following location: http://127.0.0.1:5000/graph
 * Specify the interface ( e.g. trunk-1-1 )
 
 To aggregate the traffic of interfaces you can use following syntax ( no spaces! between the interfaces )
-  trunk-1-1+trunk-1-2
+```
+trunk-1-1+trunk-1-2
+```
