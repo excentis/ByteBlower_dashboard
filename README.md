@@ -1,5 +1,5 @@
 # ByteBlower_dashboard
-A quick-and-dirty web-based dashboard showing live graphs of each ByteBlower interface in our lab
+A small yet powerful web-based dashboard showing live graphs of each ByteBlower interface in our lab
 
 This is example code to build a dashboard showing live RX-graphs of each ByteBlower Interface. You can dynamically add graphs in the WebUI. This dashboard is created by combining the ByteBlower Python API and some python libraries and frameworks.
 
