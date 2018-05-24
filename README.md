@@ -6,7 +6,7 @@ This is example code to build a dashboard showing live RX-graphs of each ByteBlo
 ## Pre-requisites
 
 * Python 2.7
-** Flask
+  * Flask
 * ByteBlower Python API
 * ByteBlower Server
 
