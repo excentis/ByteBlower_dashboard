@@ -4,7 +4,7 @@ from flask import Flask, render_template, request
 import json
 from random import randint
 import webbrowser
-import thread
+import _thread
 import time
 
 # import the ByteBlower module
@@ -74,7 +74,7 @@ def graph():
     # this allows to access the static page through the following url:
     # http://127.0.0.1:5000/graph
     # the html template (with the highcharts javascript) needs to be under the subdirectory templates/
-    return render_template('graph.html')
+    return render_template('gauge.html')
 
 # small trick to automatically start browser and show the correct page once the Flask webapp is running
 def browserThread():
@@ -89,7 +89,7 @@ def browserThread():
  
 if __name__ == '__main__':
     # start background thread to open browser once the Flask webapp is started
-    thread.start_new_thread(browserThread,())
+    _thread.start_new_thread(browserThread,())
     # start Flask webapp
     app.run(
     debug=True,
