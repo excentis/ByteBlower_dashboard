@@ -25,6 +25,8 @@
         // adds a new layout to the main page that contains the textfields (ByteBlower server and ByteBlower interfaces), 
         // the buttons (start and stop) and the chart itself
         function addGraph() {
+
+
             var prevDiv = document.getElementById("addGraphButton"); 
             // the new div will contain all new elements (textfields, buttons and chart)
             var newDiv = document.createElement("div");
@@ -174,8 +176,16 @@
 		function startGraph(button_id) {
             var graphCounter = button_id.split("_")[1];  // button id = "button_[graphCounter]"
             // let's find the approperiate textfields 
-            var server = document.getElementById("server_" + graphCounter).value;
-            var interfaces = document.getElementById("interface_" + graphCounter).value;
+
+
+			// Changed to flask variables
+
+            // var server = document.getElementById("server_" + graphCounter).value;
+            // var interfaces = document.getElementById("interface_" + graphCounter).value;
+
+			var server = '{{ server }}';
+			var interfaces = '{{ interfaces }}';
+
             // let's change the title of the chart 
             var chart=getChartById('chart' + graphCounter);
             //Schart.setTitle({text: "BB Server: " + server + ' , interface(s): ' + interfaces});

@@ -1,6 +1,6 @@
 ## Needed for python2 / python3 print function compatibility
 from __future__ import print_function
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import json
 from random import randint
 import webbrowser
@@ -68,6 +68,28 @@ def data(serverAddress,interfaces):
         print("Unable to fetch data")
         print(e)
     return json.dumps(0.00)
+
+
+@app.route("/home")
+def home():
+    # this allows to access the static page through the following url:
+    # http://127.0.0.1:5000/graph
+    # the html template (with the highcharts javascript) needs to be under the subdirectory templates/
+    return render_template('home.html')
+
+@app.route("/test", methods = ['POST','GET'])
+def test():
+    # this allows to access the static page through the following url:
+    # http://127.0.0.1:5000/graph
+    # the html template (with the highcharts javascript) needs to be under the subdirectory templates/
+    if request.method == 'POST':
+      server = request.form['server']
+      print(server)
+      interface = request.form['interface']
+      print(interface)
+      return render_template('gauge.html',server=server, interface=interface)
+
+    return render_template('home.html')
  
 @app.route("/graph")
 def graph():
