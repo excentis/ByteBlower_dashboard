@@ -6,9 +6,28 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
+<style>
+	#divContainer{
+		padding-top: 20%;
+		min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+		min-height: 100vh;  /* Fallback for browsers do NOT support vh unit */
+	}
+
+	.controlButton{
+		margin-left: 10px;
+		margin-right: 10px;
+		background-color: #c30027 !important;
+	}
+
+</style>
+
 
 <!--Start with a single button on the page-->
-<button id="addGraphButton" onclick="addGraph()">Add Graph...</button>
+<!-- <button id="addGraphButton" onclick="addGraph()">Add Graph...</button> -->
+
+<div id="divContainer">
+
+</div>
 
 <script>
         var ByteBlowerGraphsApp = {}; // global variable
@@ -27,40 +46,47 @@
         function addGraph() {
 
 
-            var prevDiv = document.getElementById("addGraphButton"); 
+            //var prevDiv = document.getElementById("addGraphButton"); 
+
+			var prevDiv = document.getElementById("divContainer"); 
+
+
             // the new div will contain all new elements (textfields, buttons and chart)
             var newDiv = document.createElement("div");
             newDiv.setAttribute("id", "container" + ByteBlowerGraphsApp.graphCounter);
             newDiv.setAttribute("style", "width: 100%;");
+			// prevDiv.appendChild(newDiv);
             // horizontal helper layout to display the textfields and buttons
             var optionsDiv = document.createElement("div");
-            optionsDiv.setAttribute("align", "right");
+            optionsDiv.setAttribute("align", "center");
             optionsDiv.setAttribute("horizontal", "");
             optionsDiv.setAttribute("layout", "");
             newDiv.appendChild(optionsDiv);
-            optionsDiv.appendChild(document.createTextNode("Server: "));
-            // textfield for ByteBlower server address
-            var serverInput = document.createElement("INPUT");
-            serverInput.setAttribute("type", "text");
-            serverInput.setAttribute("id","server_" + ByteBlowerGraphsApp.graphCounter);
-            optionsDiv.appendChild(serverInput);
-            optionsDiv.appendChild(document.createTextNode("Interface(s): "));
-            // textfield for ByteBlower interfaces that we want to monitor in the chart
-            var interfaceInput = document.createElement("INPUT");
-            interfaceInput.setAttribute("type", "text");
-            interfaceInput.setAttribute("id","interface_" + ByteBlowerGraphsApp.graphCounter);
-            optionsDiv.appendChild(interfaceInput);
+            // optionsDiv.appendChild(document.createTextNode("Server: "));
+            // // textfield for ByteBlower server address
+            // var serverInput = document.createElement("INPUT");
+            // serverInput.setAttribute("type", "text");
+            // serverInput.setAttribute("id","server_" + ByteBlowerGraphsApp.graphCounter);
+            // optionsDiv.appendChild(serverInput);
+            // optionsDiv.appendChild(document.createTextNode("Interface(s): "));
+            // // textfield for ByteBlower interfaces that we want to monitor in the chart
+            // var interfaceInput = document.createElement("INPUT");
+            // interfaceInput.setAttribute("type", "text");
+            // interfaceInput.setAttribute("id","interface_" + ByteBlowerGraphsApp.graphCounter);
+            // optionsDiv.appendChild(interfaceInput);
             // start button to start the monitoring of the interface(s), linked to the startGraph() method
             var startButton = document.createElement("button");
             startButton.appendChild(document.createTextNode("Start"));
             startButton.setAttribute("id", "start_" + ByteBlowerGraphsApp.graphCounter);
             startButton.setAttribute("onclick", "startGraph(this.id)");
+			startButton.setAttribute("class", "btn btn-primary controlButton");
             optionsDiv.appendChild(startButton);
             // start button to start the monitoring of the interface(s), linked to the stopGraph() method
             var stopButton = document.createElement("button");
             stopButton.appendChild(document.createTextNode("Stop"));
             stopButton.setAttribute("id", "stop_" + ByteBlowerGraphsApp.graphCounter);
             stopButton.setAttribute("onclick", "stopGraph(this.id)");
+			stopButton.setAttribute("class", "btn btn-primary controlButton");
             optionsDiv.appendChild(stopButton);
             // the div that will contain the highcharts chart
             var chartDiv = document.createElement("div");
@@ -68,7 +94,9 @@
             chartDiv.setAttribute("style", "min-width: 310px; height: 400px; margin: 0 auto");
             newDiv.appendChild(chartDiv);            
             // insertAfter doesn't exist, so we use following trick:
-            prevDiv.parentNode.insertBefore(newDiv, prevDiv.nextSibling);
+            //prevDiv.parentNode.insertBefore(newDiv, prevDiv.nextSibling);
+			prevDiv.appendChild(newDiv);
+
 			var gaugeOptions = {
 			    chart: {
 			        type: 'solidgauge'
@@ -184,7 +212,10 @@
             // var interfaces = document.getElementById("interface_" + graphCounter).value;
 
 			var server = '{{ server }}';
-			var interfaces = '{{ interfaces }}';
+			var interfaces = '{{ interface }}';
+
+			console.log(server);
+			console.log(interfaces);
 
             // let's change the title of the chart 
             var chart=getChartById('chart' + graphCounter);
@@ -212,4 +243,8 @@
             clearInterval(ByteBlowerGraphsApp.graphThreads["" + graphCounter]);
         }
         
+		window.addEventListener('load', (event) => {
+			console.log('page is fully loaded');
+			addGraph();
+		});
 </script>

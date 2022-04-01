@@ -12,7 +12,7 @@ import byteblowerll.byteblower as byteblower
 
 # the Flask library is used to create a REST-alike API 
 app = Flask(__name__)
-byteblower_instance = byteblower.ByteBlower.InstanceGet() 
+#byteblower_instance = byteblower.ByteBlower.InstanceGet() 
 # global variable that keeps track of the ByteBlower server objects that were created (to avoid doing this multiple times)
 server_cache = {}
 # global variable that keeps track of the ByteBlower result snapshot objects that were created (to avoid doing this multiple times)
@@ -75,7 +75,8 @@ def home():
     # this allows to access the static page through the following url:
     # http://127.0.0.1:5000/graph
     # the html template (with the highcharts javascript) needs to be under the subdirectory templates/
-    return render_template('home.html')
+    # return render_template('home.html')
+    return render_template('excentis.html',template='home.html')
 
 @app.route("/test", methods = ['POST','GET'])
 def test():
@@ -87,7 +88,9 @@ def test():
       print(server)
       interface = request.form['interface']
       print(interface)
-      return render_template('gauge.html',server=server, interface=interface)
+
+      return render_template('excentis.html',template='gauge.html',server=server, interface=interface)
+      #return render_template('gauge.html',server=server, interface=interface)ss
 
     return render_template('home.html')
  
@@ -116,7 +119,8 @@ if __name__ == '__main__':
     app.run(
     debug=True,
     threaded=True,
-    host='0.0.0.0'
+    host='0.0.0.0',
+    port=5000
     )
     
     
