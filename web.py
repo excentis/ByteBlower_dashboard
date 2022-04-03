@@ -4,15 +4,15 @@ from flask import Flask, render_template, request
 import json
 from random import randint
 import webbrowser
-import thread
+import _thread
 import time
 
 # import the ByteBlower module
-import byteblowerll.byteblower as byteblower
+#import byteblowerll.byteblower as byteblower
 
 # the Flask library is used to create a REST-alike API 
 app = Flask(__name__)
-byteblower_instance = byteblower.ByteBlower.InstanceGet() 
+#byteblower_instance = byteblower.ByteBlower.InstanceGet() 
 # global variable that keeps track of the ByteBlower server objects that were created (to avoid doing this multiple times)
 server_cache = {}
 # global variable that keeps track of the ByteBlower result snapshot objects that were created (to avoid doing this multiple times)
@@ -29,7 +29,7 @@ def data(serverAddress,interfaces):
     try:
         if serverAddress not in server_cache:
             print("Creating BB server: {}".format(serverAddress))
-            server = byteblower_instance.ServerAdd(str(serverAddress))
+            #server = byteblower_instance.ServerAdd(str(serverAddress))
             server_cache[serverAddress] = server
         server = server_cache[serverAddress]
         print("Server found: {}".format(serverAddress))
@@ -89,7 +89,7 @@ def browserThread():
  
 if __name__ == '__main__':
     # start background thread to open browser once the Flask webapp is started
-    thread.start_new_thread(browserThread,())
+    _thread.start_new_thread(browserThread,())
     # start Flask webapp
     app.run(
     debug=True,
