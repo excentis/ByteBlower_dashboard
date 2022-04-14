@@ -1,0 +1,168 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    height: 100%;
+}
+
+.background {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    width:100%;
+    height: auto;
+    /*position: fixed;*/
+    top: 0;
+    left: 0;
+    z-index: -100;
+}
+
+.purple{
+    color: #5a43af;
+}
+
+#blob{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+#button{
+    margin-top: 40px;
+    background-color: #c30027 !important;
+}
+
+#logo{
+    padding-top: 5%;
+    max-width: 20%;
+    display: block;
+    margin: 0 auto 120px auto;
+}
+
+#interface_container {
+    width: 80%;
+}
+
+.interface_settings {
+    display: block;
+    background-color: pink;
+    width: 33.33%;
+    float: left;
+    margin: auto;
+}
+
+/*div container*/
+.test_setup_part {
+    /*background-color: #e1e4e8;*/
+    width: 33.33%;
+    float: left;
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.test_setup_part:nth-child(even) {
+    width: 33.33%;
+    float: left;
+    text-align: center;
+    margin-bottom: 60px;
+    border-left: dotted 1px grey;
+    border-right: dotted 1px grey;
+}
+
+.test_title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.port_select {
+    width: 190px;
+    height: 35px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* column */
+#form_home_settings {
+    width: 70%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+}
+
+#server_domain {
+    width: 580px;
+    text-align: center;
+    margin-bottom: 85px;
+    margin-top: 10px;
+
+}
+
+label {
+    display: inline-block;
+    margin-top: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}
+
+select {
+    display: inline-block;
+    margin-bottom: 20px;
+    cursor: pointer;
+    width: 560px;
+    background-color: #ebebeb;
+    border: solid 1px grey;
+
+}
+
+input {
+    border: solid 1px grey;
+    padding: 5px 3px 5px 3px;
+    width: 300px;
+}
+
+#btn_submit {
+    display: block;
+    width: 200px;
+    margin: auto;
+    padding: 12px 5px 12px 5px;
+    color: white;
+    background-color: #009fe3;
+    border: none;
+}
+
+#btn_submit:hover {
+    background-color: #008fcc;
+}
+
+
+/* ------------------------------------ */
+/* ------------GAUGE GRAPHS------------ */
+/* ------------------------------------ */
+
+#graph_container {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.graph_column {
+    width: 33.33%;
+    float: left;
+}
+
+.graph_column h1 {
+    font-weight: 400;
+    font-size: 22px;
+    display: block;
+    text-align: center;
+}
+
+.clear {
+    clear: left;
+    margin-bottom: 70px;
+}
+
+.max_value {
+    position: relative;
+    margin-top: -50px;
+    text-align: center;
+}

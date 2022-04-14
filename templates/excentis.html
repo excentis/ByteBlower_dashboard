@@ -1,78 +1,35 @@
 <!DOCTYPE html>
     <html lang="en">
     <head>
-    <title>Dashboard</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <style>
-        body{
-            height: 100%;
-        }
-        .vertical-center {
-            min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-            min-height: 100vh; /* These two lines are counted as one :-)       */
+        <title>Dashboard</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="icon" type="image/x-icon" href="#">
+        <link rel="stylesheet" href="../static/style.css">
 
-            display: flex;
-            align-items: center;
-        }
-        .background {
-            min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-            width:100%;
-            height: auto;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -100;
-        }
-
-        .purple{
-            color: #5a43af;
-        }
-
-        #blob{
-            position: fixed;
-            bottom: 0;
-            right: 0;
-        }
-
-        #button{
-            margin-top: 40px;
-            background-color: #c30027 !important;
-        }
-
-        #logo{
-            padding-top: 5%;
-            max-width: 50%;
-            display: block;     
-            margin: auto;
-        }
-
-        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;0,800;1,500&display=swap" rel="stylesheet">
     </head>
     <body>
-
 
         <div class="background">
             <svg id="logo" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 191.37 24.17"><defs><style>.cls-1{fill:#009fe3;}</style></defs><path class="cls-1" d="M.69,24.64V.87H16.35V5h-11v5.58h9.38v4.14H5.33V20.5h11v4.14Z" transform="translate(-0.69 -0.67)"/><path class="cls-1" d="M74.09,24.84a8.72,8.72,0,0,1-6.4-2.6c-2.41-2.41-2.34-5.38-2.34-9.48s-.07-7.08,2.34-9.48A8.73,8.73,0,0,1,74.09.67c4.44,0,7.92,2.54,8.75,7.51H78.13a3.93,3.93,0,0,0-4-3.37,3.82,3.82,0,0,0-3,1.24c-.9,1-1.17,2.13-1.17,6.71s.27,5.7,1.17,6.71a3.84,3.84,0,0,0,3,1.23,3.93,3.93,0,0,0,4-3.37h4.71C82,22.3,78.5,24.84,74.09,24.84Z" transform="translate(-0.69 -0.67)"/><path class="cls-1" d="M90.18,24.64V.87h15.66V5h-11v5.58h9.38v4.14H94.82V20.5h11v4.14Z" transform="translate(-0.69 -0.67)"/><path class="cls-1" d="M127.77,24.64l-9.41-14.59V24.64h-4.64V.87h4.14l9.41,14.56V.87h4.64V24.64Z" transform="translate(-0.69 -0.67)"/><path class="cls-1" d="M149.87,5V24.64h-4.64V5H139V.87h17.06V5Z" transform="translate(-0.69 -0.67)"/><path class="cls-1" d="M163.19,24.64V.87h4.64V24.64Z" transform="translate(-0.69 -0.67)"/><path class="cls-1" d="M183.25,24.84c-3.6,0-6.34-.77-8.68-3.14l3-3a7.77,7.77,0,0,0,5.74,2c2.74,0,4.2-1,4.2-2.94a2.65,2.65,0,0,0-.73-2,3.52,3.52,0,0,0-2.1-.83l-2.87-.4a8.16,8.16,0,0,1-4.61-2,6.27,6.27,0,0,1-1.7-4.68c0-4.24,3.13-7.21,8.27-7.21,3.28,0,5.65.8,7.68,2.77l-2.93,2.91a6.62,6.62,0,0,0-4.88-1.64c-2.47,0-3.67,1.37-3.67,3a2.3,2.3,0,0,0,.7,1.7,4.08,4.08,0,0,0,2.2.93l2.81.4a7.82,7.82,0,0,1,4.54,1.84,6.65,6.65,0,0,1,1.83,5C192.06,22.24,188.22,24.84,183.25,24.84Z" transform="translate(-0.69 -0.67)"/><polygon class="cls-1" points="57.06 21.71 57.06 17.06 48.4 17.06 33.72 2.31 32.19 2.31 23 2.31 23 6.96 31.71 6.96 36.7 11.99 31.66 17.06 23 17.06 23 21.71 33.72 21.71 40.03 15.35 46.35 21.71 57.06 21.71"/><rect class="cls-1" x="47.87" y="2.31" width="9.19" height="4.65"/></svg>
             {% block content %}
-            {% if template == 'home.html' %}
-                    <img src="{{url_for('static', filename='blob-4.png')}}" id="blob" width="400" height="400"/>
-            {% else %}
-                    <img src="{{url_for('static', filename='blob-4.png')}}" id="blob" width="100" height="100"/>
-            {% endif %}
+{#            {% if template == 'home.html' %}#}
+{#                    <img src="{{url_for('static', filename='blob-4.png')}}" id="blob" width="400" height="400"/>#}
+{#            {% else %}#}
+{#                    <img src="{{url_for('static', filename='blob-4.png')}}" id="blob" width="100" height="100"/>#}
+{#            {% endif %}#}
             {% endblock content %}
-
         </div>
 
         {% include template %}
-
     </body>
 
-    <footer class="container-fluid text-center purple">
-    <p>© Excentis 2022</p>
+    <footer class="text-center purple mt-auto">
+        <p>© Excentis 2022</p>
     </footer>
 
 </html>
