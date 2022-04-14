@@ -12,7 +12,7 @@ import byteblowerll.byteblower as byteblower
 
 # the Flask library is used to create a REST-alike API 
 app = Flask(__name__)
-#byteblower_instance = byteblower.ByteBlower.InstanceGet() 
+byteblower_instance = byteblower.ByteBlower.InstanceGet() 
 # global variable that keeps track of the ByteBlower server objects that were created (to avoid doing this multiple times)
 server_cache = {}
 # global variable that keeps track of the ByteBlower result snapshot objects that were created (to avoid doing this multiple times)
