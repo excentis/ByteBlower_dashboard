@@ -1,0 +1,114 @@
+<form action="/test/{{ server }}" method="post" id="form_home_settings">
+	
+    {# input for test 1 #}
+    <div class="test_setup_part">
+
+        <label for="test_title1">Test 1 title</label><br>
+        <input type="text" name="title1" id="test_title1" class="test_title" value="Today’s DOCSIS 3.1 technology"><br>
+
+        <label for="up1">upstream</label><br>
+        <select name="up1" id="up1" class="port_select"></select>
+        <br>
+
+        <label for="down1">downstream</label><br>
+        <select name="down1" id="down1" class="port_select"></select>
+    </div>
+
+    {# input for test 2 #}
+    <div class="test_setup_part">
+        <label for="test_title1">Test 2 title</label><br>
+        <input type="text" name="title2" id="test_title2" class="test_title" value="XGS-PON technology"><br>
+
+
+        <label for="up2">upstream</label><br>
+        <select name="up2" id="up2" class="port_select"></select>
+		<br>
+
+        <label for="down2">downstream</label><br>
+        <select name="down2" id="down2" class="port_select"></select>
+    </div>
+
+    {# input for test 3 #}
+    <div class="test_setup_part">
+        <label for="test_title1">Test 3 title</label><br>
+        <input type="text" name="title3" id="test_title3" class="test_title" value="DOCSIS 4.0 technology"><br>
+
+
+        <label for="up3">upstream</label><br>
+        <select name="up3" id="up3" class="port_select"></select>
+		<br>
+
+        <label for="down3">downstream</label><br>
+        <select name="down3" id="down3" class="port_select"></select>
+    </div>
+
+    <label for=""></label>
+    <input type="submit" value="Show graph" id="btn_submit">
+
+</form>
+
+<script>
+	const select_up1 = document.getElementById("up1");
+	const select_up2 = document.getElementById("up2");
+	const select_up3 = document.getElementById("up3");
+	const select_down1 = document.getElementById("down1");
+	const select_down2 = document.getElementById("down2");
+	const select_down3 = document.getElementById("down3");
+	
+	const interfacesStr = '{{ interfaces }}';
+	const elem = document.createElement('textarea');
+	elem.innerHTML = '{{ interfaces }}';
+	const decoded = elem.value;
+	const decoded_json = decoded.replace(/'/g, '"');
+	console.log("fill drop-downs with interface list: " + decoded_json);
+	const options = JSON.parse(decoded_json)
+	
+	for(let i = 0; i < options.length; i++) {
+		let opt = options[i];
+		let el = document.createElement("option");
+		el.textContent = opt;
+		el.value = opt;
+		select_up1.appendChild(el);
+	}
+
+	for(let i = 0; i < options.length; i++) {
+		let opt = options[i];
+		let el = document.createElement("option");
+		el.textContent = opt;
+		el.value = opt;
+		select_up2.appendChild(el);
+	}
+
+	for(let i = 0; i < options.length; i++) {
+		let opt = options[i];
+		let el = document.createElement("option");
+		el.textContent = opt;
+		el.value = opt;
+		select_up3.appendChild(el);
+	}
+	
+	for(let i = 0; i < options.length; i++) {
+		let opt = options[i];
+		let el = document.createElement("option");
+		el.textContent = opt;
+		el.value = opt;
+		select_down1.appendChild(el);
+	}
+
+	for(let i = 0; i < options.length; i++) {
+		let opt = options[i];
+		let el = document.createElement("option");
+		el.textContent = opt;
+		el.value = opt;
+		select_down2.appendChild(el);
+	}
+
+	for(let i = 0; i < options.length; i++) {
+		let opt = options[i];
+		let el = document.createElement("option");
+		el.textContent = opt;
+		el.value = opt;
+		select_down3.appendChild(el);
+	}
+
+</script>

@@ -90,7 +90,7 @@ body {
 #server_domain {
     width: 580px;
     text-align: center;
-    margin-bottom: 85px;
+    margin-bottom: 25px;
     margin-top: 10px;
 
 }
@@ -132,6 +132,19 @@ input {
     background-color: #008fcc;
 }
 
+#btn_connect {
+    display: block;
+    width: 200px;
+    margin: auto;
+    color: white;
+    background-color: #009fe3;
+    border: none;
+}
+
+#btn_connect:hover {
+    background-color: #008fcc;
+}
+
 
 /* ------------------------------------ */
 /* ------------GAUGE GRAPHS------------ */
@@ -142,7 +155,6 @@ input {
     margin-left: auto;
     margin-right: auto;
 }
-
 
 .graph_column {
     width: 33.33%;
