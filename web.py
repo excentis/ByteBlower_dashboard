@@ -8,7 +8,7 @@ import time
 # import the ByteBlower module
 import byteblowerll.byteblower as byteblower
 
-# the Flask library is used to create a REST-alike API
+# the Flask library is used to create a REST-alike API 
 app = Flask(__name__)
 byteblower_instance = byteblower.ByteBlower.InstanceGet()
 # global variable that keeps track of the ByteBlower server objects that were created (to avoid doing this multiple times)
@@ -22,9 +22,9 @@ snapshot_bytecount_cache = {}
 
 
 # this is the call that is done by the highcharts charts to get new data for their graph
-# the url contains the ByteBlower server address and interface(s) the graph is for
-@app.route("/data.json/<serverAddress>/<interfaces>")
-def data(serverAddress, interfaces):
+# the url contains the ByteBlower server address and interface(s) and UDP/TCP ports the graph is for 
+@app.route("/data.json/<serverAddress>/<interfaces>/<l4port>")
+def data(serverAddress, interfaces, l4port):
     try:
         if serverAddress not in server_cache:
             print("Creating BB server: {}".format(serverAddress))
@@ -35,18 +35,21 @@ def data(serverAddress, interfaces):
         snapshots = []
         # a single graph can monitor a single interface (for example trunk-1-1) or the sum of multiple interfaces (for example trunk-1-1+trunk-1-2)
         for interface in interfaces.split("+"):
-            if "{}-{}".format(serverAddress, interface) not in snapshot_cache:
+            if "{}-{}-{}".format(serverAddress, interface, l4port) not in snapshot_cache:
                 print("Creating BB port with trigger at interface {}".format(interface))
                 port = server.PortCreate(str(interface))
                 # add basic trigger to the port to start monitoring
                 trigger = port.RxTriggerBasicAdd()
+                if l4port.isnumeric():
+                    bpf_filter = 'udp port {} or tcp port {}'.format(int(l4port),int(l4port))
+                    trigger.FilterSet(bpf_filter)
                 # get the result snapshot object that we then can refresh everytime we need a new result
                 trigger_snapshot = trigger.ResultGet()
-                snapshot_cache["{}-{}".format(serverAddress, interface)] = trigger_snapshot
+                snapshot_cache["{}-{}-{}".format(serverAddress, interface, l4port)] = trigger_snapshot
                 snapshot_timestamp_cache[trigger_snapshot] = trigger_snapshot.RefreshTimestampGet()
                 snapshot_bytecount_cache[trigger_snapshot] = trigger_snapshot.ByteCountGet()
-            snapshot = snapshot_cache["{}-{}".format(serverAddress, interface)]
-            print("Port snapshot found: {}".format(interface))
+            snapshot = snapshot_cache["{}-{}-{}".format(serverAddress, interface, l4port)]
+            print("Port snapshot found: {}-{}".format(interface, l4port))
             snapshots.append(snapshot)
         mbps_total = 0.0
 
@@ -98,13 +101,11 @@ def config_test():
             for interfaceName in interfaceNames:
                 interfaces.append("{}".format(interfaceName))
             print("Interfaces found: {}".format(interfaces))
-            return render_template('excentis.html', template='config_test.html', server=serverAddress,
-                                   interfaces=interfaces)
+            return render_template('excentis.html', template='config_test.html', server=serverAddress, interfaces=interfaces)
         except Exception as e:
             print("Unable to fetch data")
             print(e)
     return render_template('home.html')
-
 
 @app.route("/test/<server>", methods=['POST', 'GET'])
 def test(server):
@@ -112,21 +113,28 @@ def test(server):
     # http://127.0.0.1:5000/test
     # the html template (with the highcharts javascript) needs to be under the subdirectory templates/
     if request.method == 'POST':
+            
         # upstream and downstream settings for the three tests
         title1 = request.form['title1']
         print("title1 : {}".format(title1))
         up1 = request.form['up1']
         down1 = request.form['down1']
+        up1_port = request.form['up1_port']
+        down1_port = request.form['down1_port']
 
         title2 = request.form['title2']
         print("title2 : {}".format(title2))
         up2 = request.form['up2']
         down2 = request.form['down2']
+        up2_port = request.form['up2_port']
+        down2_port = request.form['down2_port']
 
         title3 = request.form['title3']
         print("title3 : {}".format(title3))
         up3 = request.form['up3']
         down3 = request.form['down3']
+        up3_port = request.form['up3_port']
+        down3_port = request.form['down3_port']
 
         # return render_template('gauge.html',server=server, interface=interface)ss
         return render_template('excentis.html',
@@ -135,14 +143,23 @@ def test(server):
                                title1=title1,
                                up1=up1,
                                down1=down1,
+                               up1_port=up1_port,
+                               down1_port=down1_port,
                                title2=title2,
                                up2=up2,
                                down2=down2,
+                               up2_port=up2_port,
+                               down2_port=down2_port,
                                title3=title3,
                                up3=up3,
-                               down3=down3)
+                               down3=down3,
+                               up3_port=up3_port,
+                               down3_port=down3_port)
+
 
     return render_template('home.html')
+
+
 
 
 if __name__ == '__main__':

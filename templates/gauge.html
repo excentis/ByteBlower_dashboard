@@ -23,14 +23,14 @@
     const gauge = new Gauge('{{ server }}');
 
     // parameters = stream, div name (see graph_container dev above), graph name
-    gauge.addGraph('{{ up1 }}', "graph_column1", "upstream");
-    gauge.addGraph('{{ down1 }}', "graph_column1", "downstream");
+    gauge.addGraph('{{ up1 }}/{{ up1_port }}', "graph_column1", "upstream");
+    gauge.addGraph('{{ down1 }}/{{ down1_port }}', "graph_column1", "downstream");
 
-    gauge.addGraph('{{ up2 }}', "graph_column2", "upstream");
-    gauge.addGraph('{{ down2 }}', "graph_column2", "downstream");
+    gauge.addGraph('{{ up2 }}/{{ up2_port }}', "graph_column2", "upstream");
+    gauge.addGraph('{{ down2 }}/{{ down2_port }}', "graph_column2", "downstream");
 
-    gauge.addGraph('{{ up3 }}', "graph_column3", "upstream");
-    gauge.addGraph('{{ down3 }}', "graph_column3", "downstream");
+    gauge.addGraph('{{ up3 }}/{{ up3_port }}', "graph_column3", "upstream");
+    gauge.addGraph('{{ down3 }}/{{ down3_port }}', "graph_column3", "downstream");
 </script>
 
 

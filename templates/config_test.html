@@ -8,10 +8,13 @@
 
         <label for="up1">upstream</label><br>
         <select name="up1" id="up1" class="port_select"></select>
-        <br>
+        <input type="text" name="up1_port" id="up1_port" class="test_title" placeholder="UDP or TCP port number"><br>
+		<br>
 
         <label for="down1">downstream</label><br>
         <select name="down1" id="down1" class="port_select"></select>
+		<input type="text" name="down1_port" id="down1_port" class="test_title" placeholder="UDP or TCP port number"><br>
+		
     </div>
 
     {# input for test 2 #}
@@ -22,10 +25,12 @@
 
         <label for="up2">upstream</label><br>
         <select name="up2" id="up2" class="port_select"></select>
+		<input type="text" name="up2_port" id="up2_port" class="test_title" placeholder="UDP or TCP port number"><br>
 		<br>
 
         <label for="down2">downstream</label><br>
         <select name="down2" id="down2" class="port_select"></select>
+		<input type="text" name="down2_port" id="down2_port" class="test_title" placeholder="UDP or TCP port number"><br>
     </div>
 
     {# input for test 3 #}
@@ -36,79 +41,78 @@
 
         <label for="up3">upstream</label><br>
         <select name="up3" id="up3" class="port_select"></select>
+		<input type="text" name="up3_port" id="up3_port" class="test_title" placeholder="UDP or TCP port number"><br>
 		<br>
 
         <label for="down3">downstream</label><br>
         <select name="down3" id="down3" class="port_select"></select>
+		<input type="text" name="down3_port" id="down3_port" class="test_title" placeholder="UDP or TCP port number"><br>
     </div>
 
     <label for=""></label>
     <input type="submit" value="Show graph" id="btn_submit">
 
+	
+	
 </form>
 
 <script>
-	const select_up1 = document.getElementById("up1");
-	const select_up2 = document.getElementById("up2");
-	const select_up3 = document.getElementById("up3");
-	const select_down1 = document.getElementById("down1");
-	const select_down2 = document.getElementById("down2");
-	const select_down3 = document.getElementById("down3");
+	var select_up1 = document.getElementById("up1");
+	var select_up2 = document.getElementById("up2");
+	var select_up3 = document.getElementById("up3");
+	var select_down1 = document.getElementById("down1");
+	var select_down2 = document.getElementById("down2");
+	var select_down3 = document.getElementById("down3");
 	
-	const interfacesStr = '{{ interfaces }}';
-	const elem = document.createElement('textarea');
+	var interfacesStr = '{{ interfaces }}';
+	var elem = document.createElement('textarea');
 	elem.innerHTML = '{{ interfaces }}';
-	const decoded = elem.value;
-	const decoded_json = decoded.replace(/'/g, '"');
+	var decoded = elem.value;
+	var decoded_json = decoded.replace(/'/g, '"');
 	console.log("fill drop-downs with interface list: " + decoded_json);
-	const options = JSON.parse(decoded_json)
+	var options = JSON.parse(decoded_json)
 	
-	for(let i = 0; i < options.length; i++) {
-		let opt = options[i];
-		let el = document.createElement("option");
+	for(var i = 0; i < options.length; i++) {
+		var opt = options[i];
+		var el = document.createElement("option");
 		el.textContent = opt;
 		el.value = opt;
 		select_up1.appendChild(el);
 	}
-
-	for(let i = 0; i < options.length; i++) {
-		let opt = options[i];
-		let el = document.createElement("option");
+	for(var i = 0; i < options.length; i++) {
+		var opt = options[i];
+		var el = document.createElement("option");
 		el.textContent = opt;
 		el.value = opt;
 		select_up2.appendChild(el);
 	}
-
-	for(let i = 0; i < options.length; i++) {
-		let opt = options[i];
-		let el = document.createElement("option");
+	for(var i = 0; i < options.length; i++) {
+		var opt = options[i];
+		var el = document.createElement("option");
 		el.textContent = opt;
 		el.value = opt;
 		select_up3.appendChild(el);
 	}
 	
-	for(let i = 0; i < options.length; i++) {
-		let opt = options[i];
-		let el = document.createElement("option");
+	for(var i = 0; i < options.length; i++) {
+		var opt = options[i];
+		var el = document.createElement("option");
 		el.textContent = opt;
 		el.value = opt;
 		select_down1.appendChild(el);
 	}
-
-	for(let i = 0; i < options.length; i++) {
-		let opt = options[i];
-		let el = document.createElement("option");
+	for(var i = 0; i < options.length; i++) {
+		var opt = options[i];
+		var el = document.createElement("option");
 		el.textContent = opt;
 		el.value = opt;
 		select_down2.appendChild(el);
 	}
-
-	for(let i = 0; i < options.length; i++) {
-		let opt = options[i];
-		let el = document.createElement("option");
+	for(var i = 0; i < options.length; i++) {
+		var opt = options[i];
+		var el = document.createElement("option");
 		el.textContent = opt;
 		el.value = opt;
 		select_down3.appendChild(el);
 	}
-
 </script>

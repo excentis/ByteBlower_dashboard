@@ -6,16 +6,15 @@ class Gauge {
         this.ByteBlowerGraphsApp = {}; // global variable
         this.ByteBlowerGraphsApp.graphCounter = 0; // let's keep track of the graphs added to the page
         this.ByteBlowerGraphsApp.graphThreads = {}; // let's keep track of the graphs updater threads that are running in the background
+
+
     }
 
-    /**
-     * Adds a graph to class
-     * @param stream = Trunk for stream
-     * @param container_name = Container id of container to which the graph needs to be appended. (Containers are created in gauge.html)
-     * @param graph_name = upstream or downstream
-     */
     addGraph(stream, container_name, graph_name) {
-
+		console.log("stream before check = " + stream);
+		if (stream.slice(-1) == '/') {
+			stream += "any";
+		}
         const prevDiv = document.getElementById(container_name);
 
         console.log("stream = " + stream);
@@ -120,7 +119,7 @@ class Gauge {
             series: [{
                 name: 'Max Speed',
                 data: [{
-					color: '#01C36B',
+					color: '#55BF3B',
 					radius: '110%',
 					innerRadius: '85%',
 					y: 0
@@ -139,7 +138,6 @@ class Gauge {
 			{
                 name: 'Current Speed',
                 data: [{
-                    color: '#169FDB',
 					radius: '84%',
 					innerRadius: '60%',
 					y: 0
@@ -157,7 +155,7 @@ class Gauge {
             }]
         }));
 
-
+        
         this.startGraph(chart_name, stream);
         this.ByteBlowerGraphsApp.graphCounter++;
     }
@@ -174,7 +172,7 @@ class Gauge {
 		let pointCurrent = seriesCurrent.points[0];
         let valueHistory = Array(MAX_HISTORY_SECS).fill(0);
 		let valueHistoryPointer = 0;
-
+		
 
         const server_name = this.server;
         console.log("server name = " + server_name);
@@ -190,9 +188,11 @@ class Gauge {
                 y = Math.round(data/1000 *100)/100;
 				valueHistory[valueHistoryPointer] = y;
                 valueHistoryPointer = (valueHistoryPointer + 1) % MAX_HISTORY_SECS
-
+				
 				pointMax.update(Math.max(...valueHistory));
 				pointCurrent.update(y);
+
+                
             });
 
         }, 1000);
